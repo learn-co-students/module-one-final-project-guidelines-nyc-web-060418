@@ -1,7 +1,9 @@
-# frozen_string_literal: true
-source "https://rubygems.org"
-
-gem "sinatra-activerecord"
-gem "sqlite3"
-gem "pry"
-gem "require_all"
+gem 'activerecord', :require => 'active_record'
+gem 'pry'
+gem 'rake'
+gem 'json'
+gem 'rest-client'
+gem 'sqlite3'
+gem 'require_all'
+gem 'sinatra-activerecord'
+gem 'geocoder'
