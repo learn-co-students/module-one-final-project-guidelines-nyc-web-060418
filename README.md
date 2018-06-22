@@ -1,49 +1,41 @@
-# Module One Final Project Guidelines
+Welcome!
+This app was made with love by Laura Nadolski and Leann Kim. We are currently (as of June 21, 2018) web development students at the Flatiron School in the big apple.
 
-Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
+Description:
+Surge Watcher is an app for all you cheap-ass people out there (us included) who want to avoid surge pricing on Lyft. It takes your target ride origin and destination, and gives you a price estimate, along with data about whether or not surge pricing is in effect. You can continue to "ping" (AKA check your ride's rate) to your heart's desire, each time getting a newly updated rate quote. Then, when it's cheap enough for you, you can request the Lyft on your real phone and go on your merry way. Yay!
 
-For your final project, we'll be building a Command Line database application.
+Some notes:
+-Currently, this app only works with "Lyft" standard ride service (e.g. not Lyft Line, not Lyft Lux, not Lyft Plus).
+-The ride estimate dollar amounts as displayed in this app are for the maximum price estimates for the ride.
+-Sometimes, the Google API this app uses (through the Geocoder Ruby gem) gets overloaded with queries. This will STDOUT an error message, however, ignore this and the program should continue to run as planned thereafter.
 
-## Project Requirements
+Install instructions:
+1. Start by creating an account at https://www.lyft.com/developers. You'll need one to get some keys from Lyft's website, with which you'll gain access to Lyft's API.
+2. Follow the instructions in the "Managing and Refreshing Lyft API Tokens" section below to get your API all set up.
+3. Run the program and enjoy!
 
-### Option One - Data Analytics Project
 
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have at minimum three models including one join model. This means you must have a many-to-many relationship.
-3. You should seed your database using data that you collect either from a CSV, a website by scraping, or an API.
-4. Your models should have methods that answer interesting questions about the data. For example, if you've collected info about movie reviews, what is the most popular movie? What movie has the most reviews?
-5. You should provide a CLI to display the return values of your interesting methods.  
-6. Use good OO design patterns. You should have separate classes for your models and CLI interface.
+Managing and Refreshing Lyft API Tokens:
 
-### Option Two - Command Line CRUD App
+The Lyft API tokens are only valid for 24 hours, thus if it's been over 24 hours since last refreshing them, you'll have to do so in order to run this app.
 
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have a minimum of three models.
-3. You should build out a CLI to give your user full CRUD ability for at least one of your resources. For example, build out a command line To-Do list. A user should be able to create a new to-do, see all todos, update a todo item, and delete a todo. Todos can be grouped into categories, so that a to-do has many categories and categories have many to-dos.
-4. Use good OO design patterns. You should have separate models for your runner and CLI interface.
+(For reference, update the below each time a new client secret is refreshed.)
+Our (current) Client ID: A2ihIeNpyuac
+Our (current) Client Secret: yT_YZ44OYUPjIU1ksorgLjRb36I4iVeT
+Our (current) token: "kcJbbCCZLgd9djD7ZOHz0B7U5g27zQtnkPxh4rQV1w9BCawM/ETrq2uzxug/2v95cVPLLOzEktP6WLx4gd/BGj1PuDRSXI1aB0XmqGxvBleqiKySAZljZ4w="
 
-### Brainstorming and Proposing a Project Idea
+STEPS
+1. Run below code in terminal with existing client ID and *refreshed* client secret (client secret must be refreshed on the Lyft developer's website for this to work):
+  curl -X POST -H "Content-Type: application/json" \
+       --user "<client_id>:<client_secret>" \
+       -d '{"grant_type": "client_credentials", "scope": "public"}' \
+       'https://api.lyft.com/oauth/token'
+2. The above step will return a token. Retrieve the token and implement it below:
+curl --include -X GET -H 'Authorization: bearer <access_token>' \
+     'https://api.lyft.com/v1/cost?start_lat=37.7763&start_lng=-122.3918&end_lat=37.7972&end_lng=-122.4533'
 
-Projects need to be approved prior to launching into them, so take some time to brainstorm project options that will fulfill the requirements above.  You must have a minimum of four [user stories](https://en.wikipedia.org/wiki/User_story) to help explain how a user will interact with your app.  A user story should follow the general structure of `"As a <role>, I want <goal/desire> so that <benefit>"`. In example, if we were creating an app to randomly choose nearby restaurants on Yelp, we might write:
+3. Now you should be good to use the URL portion of the above in your program (for the next 24 hours at least)!
 
-* As a user, I want to be able to enter my name to retrieve my records
-* As a user, I want to enter a location and be given a random nearby restaurant suggestion
-* As a user, I should be able to reject a suggestion and not see that restaurant suggestion again
-* As a user, I want to be able to save to and retrieve a list of favorite restaurant suggestions
-
-## Instructions
-
-1. Fork and clone this repository.
-2. Build your application. Make sure to commit early and commit often. Commit messages should be meaningful (clearly describe what you're doing in the commit) and accurate (there should be nothing in the commit that doesn't match the description in the commit message). Good rule of thumb is to commit every 3-7 mins of actual coding time. Most of your commits should have under 15 lines of code and a 2 line commit is perfectly acceptable.
-3. Make sure to create a good README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
-4. Make sure your project checks off each of the above requirements.
-5. Prepare a video demo (narration helps!) describing how a user would interact with your working project.
-    * The video should:
-      - Have an overview of your project.(2 minutes max)
-6. Prepare a presentation to follow your video.(3 minutes max)
-    * Your presentation should:
-      - Describe something you struggled to build, and show us how you ultimately implemented it in your code.
-      - Discuss 3 things you learned in the process of working on this project.
-      - Address, if anything, what you would change or add to what you have today?
-      - Present any code you would like to highlight.   
-7. *OPTIONAL, BUT RECOMMENDED*: Write a blog post about the project and process.
+For reference:
+https://developer.lyft.com/v1/reference#availability-ride-estimates
+https://developer.lyft.com/docs/authentication#section-client-credentials-2-legged-flow-for-public-endpoints
